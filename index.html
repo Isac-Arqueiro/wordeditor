@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editor Pro</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Consolas, monospace;
+}
+
+body{
+  display:flex;
+  height:100vh;
+  background:#1e1e2f;
+  color:white;
+}
+
+.left{
+  width:50%;
+  display:flex;
+  flex-direction:column;
+  border-right:2px solid #2d2d44;
+}
+
+.tabs{
+  display:flex;
+  background:#111827;
+}
+
+.tab{
+  padding:10px 20px;
+  cursor:pointer;
+  border-right:1px solid #2d2d44;
+}
+
+.tab.active{
+  background:#0f172a;
+  color:#38bdf8;
+}
+
+textarea{
+  flex:1;
+  background:#0f172a;
+  color:#38bdf8;
+  border:none;
+  padding:15px;
+  resize:none;
+  outline:none;
+  font-size:14px;
+  display:none;
+}
+
+textarea.active{
+  display:block;
+}
+
+.buttons{
+  display:flex;
+  background:#111827;
+  padding:10px;
+  gap:10px;
+}
+
+button{
+  padding:8px 15px;
+  border:none;
+  cursor:pointer;
+  border-radius:4px;
+  font-weight:bold;
+}
+
+.run{
+  background:#22c55e;
+  color:black;
+}
+
+.clear{
+  background:#ef4444;
+  color:white;
+}
+
+.right{
+  width:50%;
+  display:flex;
+  flex-direction:column;
+}
+
+.preview-header{
+  background:#111827;
+  padding:10px;
+  text-align:center;
+}
+
+iframe{
+  flex:1;
+  border:none;
+  background:white;
+}
+</style>
+</head>
+<body>
+
+<div class="left">
+  <div class="tabs">
+    <div class="tab active" onclick="openTab('html')">HTML</div>
+    <div class="tab" onclick="openTab('css')">CSS</div>
+    <div class="tab" onclick="openTab('js')">JS</div>
+  </div>
+
+  <textarea id="html" class="active">
+<h1>Olá Mundo 🚀</h1>
+<p>Editor Profissional</p>
+  </textarea>
+
+  <textarea id="css">
+body{
+  background:#f0f0f0;
+  text-align:center;
+}
+h1{
+  color:blue;
+}
+  </textarea>
+
+  <textarea id="js">
+console.log("Funcionando!");
+  </textarea>
+
+  <div class="buttons">
+    <button class="run" onclick="runCode()">Executar</button>
+    <button class="clear" onclick="clearCode()">Limpar</button>
+  </div>
+</div>
+
+<div class="right">
+  <div class="preview-header">Visualização</div>
+  <iframe id="preview"></iframe>
+</div>
+
+<script>
+function openTab(tabName){
+  document.querySelectorAll("textarea").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+
+  document.getElementById(tabName).classList.add("active");
+  event.target.classList.add("active");
+}
+
+function runCode(){
+  const html = document.getElementById("html").value;
+  const css = "<style>" + document.getElementById("css").value + "</style>";
+  const js = "<script>" + document.getElementById("js").value + "<\/script>";
+
+  const preview = document.getElementById("preview").contentWindow.document;
+  preview.open();
+  preview.write(html + css + js);
+  preview.close();
+}
+
+function clearCode(){
+  document.getElementById("html").value = "";
+  document.getElementById("css").value = "";
+  document.getElementById("js").value = "";
+}
+
+runCode();
+</script>
+
+</body>
+</html>
